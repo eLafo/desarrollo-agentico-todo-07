@@ -11,13 +11,13 @@ test.describe('Tareas', () => {
     await eliminar.click();
     await expect(page.locator('.task-title')).toHaveText(['Enviar la factura', 'Revisar el presupuesto']);
 
-    // 2. Pulsa eliminar y acepta: la tarea desaparece
+    // 2. Pulsa eliminar y acepta: la tarea desaparece, sin aviso
     page.once('dialog', async (dialog) => {
       expect(dialog.message()).toBe('¿Seguro que quieres eliminar esta tarea?');
       await dialog.accept();
     });
     await eliminar.click();
-    await expect(page.getByRole('status')).toHaveText('Tarea eliminada.');
     await expect(page.locator('.task-title')).toHaveText(['Revisar el presupuesto']);
+    await expect(page.getByRole('status')).toHaveCount(0);
   });
 });

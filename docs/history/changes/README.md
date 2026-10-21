@@ -18,3 +18,9 @@ Un documento de cierre cuenta qué pasó en su caso, y no se reescribe cuando ot
 Entre tres y cinco condiciones por documento, y las entradas en orden por número de issue. Si un documento ya tiene entrada, se actualizan sus condiciones en lugar de añadir otra.
 
 ## Índice
+
+- [feature-9-quiero-quitar-la-barra-de-notificacion-de-arriba.md](feature-9-quiero-quitar-la-barra-de-notificacion-de-arriba.md): se quita la barra de avisos («Tarea creada.», «Tarea actualizada.», «Tarea eliminada.») y su plantilla y estilos
+  - Cuando se trabaje con `templates/application.plush.html` o con avisos de confirmación en las pantallas
+  - Cuando se modifique `c.Flash().Add` en `actions/tasks.go` o la convención de flashes de `docs/procedures/conventions.md`
+  - Cuando se toquen las clases `.flash` de `public/assets/app.css` o se busque `_flash.plush.html`
+  - Cuando se escriban tests de `e2e/tareas/` que esperen `role="status"`

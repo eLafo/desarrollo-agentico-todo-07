@@ -29,13 +29,13 @@ Antes de guardar, la acción quita los espacios del principio y del final. Los c
 ## Añadir
 
 - El formulario está debajo de la lista: el campo «Nueva tarea», con el texto de ayuda «Añadir una tarea…», y el botón «Añadir».
-- Si el título es válido, la tarea se crea pendiente, aparece al final de la lista y sale el aviso «Tarea creada.».
+- Si el título es válido, la tarea se crea pendiente, aparece al final de la lista.
 - Si no, la lista se vuelve a mostrar con `422`: el campo conserva lo escrito, queda marcado como inválido y el mensaje sale debajo.
 
 ## Editar
 
 - Se llega desde el enlace de editar de cada tarea. La pantalla tiene el enlace «← Volver a la lista», el título «Editar tarea» y el campo «Título» con el título actual. Debajo, la ayuda: «Hasta 200 caracteres. Los demás datos de la tarea no cambian.».
-- «Guardar cambios» cambia solo el título: si la tarea estaba completada, lo sigue estando. Después vuelve a la lista con el aviso «Tarea actualizada.».
+- «Guardar cambios» cambia solo el título: si la tarea estaba completada, lo sigue estando. Después vuelve a la lista.
 - Con un título inválido, la pantalla se vuelve a mostrar con `422` y el mensaje. «Cancelar» vuelve a la lista sin cambiar nada.
 - Si la tarea no existe, `404`.
 
@@ -48,16 +48,9 @@ Antes de guardar, la acción quita los espacios del principio y del final. Los c
 ## Eliminar
 
 - El botón de eliminar pide confirmación: «¿Seguro que quieres eliminar esta tarea?». Si se cancela, no pasa nada. Sin JavaScript, elimina sin preguntar.
-- Al eliminar, la tarea desaparece de la lista y sale el aviso «Tarea eliminada.».
+- Al eliminar, la tarea desaparece de la lista.
 - Si la tarea no existe, `404`.
 
 ## Avisos
 
-Los avisos salen arriba, en la primera pantalla que se muestra después de la acción, y se anuncian a los lectores de pantalla (`role="status"`):
-
-| Acción | Aviso |
-| --- | --- |
-| Añadir | «Tarea creada.» |
-| Editar | «Tarea actualizada.» |
-| Eliminar | «Tarea eliminada.» |
-| Completar o reabrir | Ninguno |
+Ninguna acción muestra un aviso de confirmación: el resultado de añadir, editar, completar, reabrir o eliminar se ve en la propia lista.

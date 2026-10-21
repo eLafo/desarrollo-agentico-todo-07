@@ -19,7 +19,7 @@ Una aplicación web con una sola lista de tareas, sin usuarios ni cuentas. Se pu
 | `cmd/app/` | El arranque: aplica las migraciones pendientes y sirve la aplicación |
 | `actions/` | Rutas y middleware (`app.go`), acciones de las tareas (`tasks.go`) y comprobación de salud (`health.go`) |
 | `models/` | La conexión a la base de datos, las migraciones (`models.go`) y el modelo `Task` con su validación (`task.go`) |
-| `templates/` | La plantilla común (`application.plush.html`), los avisos (`_flash.plush.html`) y las pantallas de tareas (`tasks/`) |
+| `templates/` | La plantilla común (`application.plush.html`) y las pantallas de tareas (`tasks/`) |
 | `public/assets/` | `app.css` y `app.js` |
 | `migrations/` | El esquema y los datos de ejemplo, embebidos en el binario |
 | `fixtures/` | Datos para los tests de Go |
@@ -59,8 +59,8 @@ Los formularios envían `PUT` y `DELETE` como `POST` con el campo `_method`.
 
 1. La ruta de `actions/app.go` elige la acción. Antes pasan los middleware: redirección a HTTPS (solo en producción), registro de parámetros, protección CSRF (Buffalo la desactiva con `GO_ENV=test`) y una transacción de base de datos por petición.
 2. La acción toma la transacción (`c.Value("tx")`), lee la entrada y llama al modelo. `Task.Validate` decide si la entrada es válida.
-3. Si hay errores de validación, la acción vuelve a mostrar el formulario con `422`. Si todo va bien, añade un aviso (flash) y redirige con `303` a `/`.
-4. La pantalla se renderiza dentro de `application.plush.html`, que muestra los avisos pendientes y carga `app.css` y `app.js`.
+3. Si hay errores de validación, la acción vuelve a mostrar el formulario con `422`. Si todo va bien, añade un mensaje flash, que ninguna plantilla muestra, y redirige con `303` a `/`.
+4. La pantalla se renderiza dentro de `application.plush.html`, que carga `app.css` y `app.js`.
 5. `app.js` mejora lo que ya funciona sin él: pide confirmación antes de eliminar y cambia el estado de una tarea sin recargar la página.
 
 ## Configuración
