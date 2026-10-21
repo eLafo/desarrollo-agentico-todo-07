@@ -9,10 +9,10 @@ test.describe('Tareas', () => {
     await page.getByRole('textbox', { name: 'Nueva tarea' }).fill('Comprar pan');
     await page.getByRole('button', { name: 'Añadir' }).click();
 
-    // 3. La tarea aparece pendiente, con el aviso y el contador
-    await expect(page.getByRole('status')).toHaveText('Tarea creada.');
+    // 3. La tarea aparece pendiente, con el contador y sin aviso
     await expect(page.locator('.task-title')).toHaveText(['Comprar pan']);
     await expect(page.getByRole('button', { name: 'Completar tarea: Comprar pan' })).toBeVisible();
     await expect(page.locator('.list-count')).toHaveText('1 tarea en tu lista');
+    await expect(page.getByRole('status')).toHaveCount(0);
   });
 });

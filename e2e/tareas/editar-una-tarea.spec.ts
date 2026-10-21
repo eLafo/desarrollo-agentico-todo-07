@@ -13,8 +13,8 @@ test.describe('Tareas', () => {
     await page.getByRole('textbox', { name: 'Título' }).fill('Llamar al proveedor de papel');
     await page.getByRole('button', { name: 'Guardar cambios' }).click();
 
-    // 3. Vuelve a la lista con el título nuevo, en el mismo sitio
-    await expect(page.getByRole('status')).toHaveText('Tarea actualizada.');
+    // 3. Vuelve a la lista con el título nuevo, en el mismo sitio y sin aviso
     await expect(page.locator('.task-title')).toHaveText(['Llamar al proveedor de papel', 'Revisar el presupuesto']);
+    await expect(page.getByRole('status')).toHaveCount(0);
   });
 });
