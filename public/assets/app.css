@@ -67,6 +67,19 @@ body {
   color: var(--color-primary);
 }
 
+/* El logo es el fichero de Entaina tal cual: 640 × 264, con un margen transparente
+   alrededor del dibujo (612 × 141) de 12 px a la izquierda, 44 arriba, 16 a la derecha
+   y 79 abajo. --logo-drawing es la altura del dibujo; la imagen mide 264/141 veces eso,
+   y los márgenes negativos devuelven el dibujo a la esquina, alineado con «todo.».
+   Abajo no se compensa: la imagen no se monta sobre «todo.». */
+.brand-logo {
+  --logo-drawing: 2rem;
+  display: block;
+  width: auto;
+  height: calc(var(--logo-drawing) * 264 / 141);
+  margin: calc(var(--logo-drawing) * -44 / 141) 0 0 calc(0.65rem - var(--logo-drawing) * 12 / 141);
+}
+
 .nav-link {
   display: flex;
   align-items: center;
@@ -423,6 +436,13 @@ input:focus-visible {
   .app-brand {
     margin-bottom: 0;
     padding-left: 0;
+    margin-right: auto;
+  }
+
+  .brand-logo {
+    --logo-drawing: 1.125rem;
+    margin: calc(var(--logo-drawing) * -44 / 141) calc(var(--logo-drawing) * -16 / 141)
+      calc(var(--logo-drawing) * -79 / 141) calc(var(--logo-drawing) * -12 / 141);
   }
 
   .container {

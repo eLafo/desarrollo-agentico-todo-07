@@ -20,7 +20,7 @@ Una aplicación web con una sola lista de tareas, sin usuarios ni cuentas. Se pu
 | `actions/` | Rutas y middleware (`app.go`), acciones de las tareas (`tasks.go`) y comprobación de salud (`health.go`) |
 | `models/` | La conexión a la base de datos, las migraciones (`models.go`) y el modelo `Task` con su validación (`task.go`) |
 | `templates/` | La plantilla común (`application.plush.html`), los avisos (`_flash.plush.html`) y las pantallas de tareas (`tasks/`) |
-| `public/assets/` | `app.css` y `app.js` |
+| `public/assets/` | `app.css`, `app.js` y el logo de Entaina (`entaina-logo.png`) |
 | `migrations/` | El esquema y los datos de ejemplo, embebidos en el binario |
 | `fixtures/` | Datos para los tests de Go |
 | `e2e/` | Tests de navegador |

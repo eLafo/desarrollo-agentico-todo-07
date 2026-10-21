@@ -126,6 +126,21 @@ func (as *ActionSuite) Test_TasksIndex_EditLink() {
 	as.Contains(res.Body.String(), "Editar tarea: Título original")
 }
 
+func (as *ActionSuite) Test_TasksIndex_ShowsLogo() {
+	res := as.HTML("/").Get()
+	as.Equal(200, res.Code)
+	as.Contains(res.Body.String(), `src="/assets/entaina-logo.png"`)
+	as.Contains(res.Body.String(), `alt="Entaina"`)
+}
+
+func (as *ActionSuite) Test_TasksEdit_ShowsLogo() {
+	task := as.taskForEditing(false)
+	res := as.HTML("/tasks/%s/edit", task.ID).Get()
+	as.Equal(200, res.Code)
+	as.Contains(res.Body.String(), `src="/assets/entaina-logo.png"`)
+	as.Contains(res.Body.String(), `alt="Entaina"`)
+}
+
 func (as *ActionSuite) Test_TasksEdit_PrefillsTitle() {
 	task := as.taskForEditing(true)
 	res := as.HTML("/tasks/%s/edit", task.ID).Get()
