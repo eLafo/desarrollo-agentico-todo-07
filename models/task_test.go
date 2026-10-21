@@ -69,3 +69,13 @@ func (ms *ModelSuite) Test_Task_Toggle_Persists() {
 	ms.NoError(ms.DB.Find(reloaded, task.ID))
 	ms.True(reloaded.Completed)
 }
+
+func (ms *ModelSuite) Test_Tasks_CompletedCount_NoneCompleted() {
+	ms.Equal(0, Tasks{}.CompletedCount())
+	ms.Equal(0, Tasks{{Title: "A"}, {Title: "B"}}.CompletedCount())
+}
+
+func (ms *ModelSuite) Test_Tasks_CompletedCount_CountsCompleted() {
+	tasks := Tasks{{Title: "A", Completed: true}, {Title: "B"}, {Title: "C", Completed: true}}
+	ms.Equal(2, tasks.CompletedCount())
+}

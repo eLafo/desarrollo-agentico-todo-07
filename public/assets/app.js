@@ -31,5 +31,15 @@ document.addEventListener("submit", function (event) {
     status.remove();
   }
 
-  fetch(form.action);
+  // Completa o reabre la tarea sin recargar la página y copia el recuento que devuelve el servidor.
+  fetch(form.action, { method: "POST", body: new URLSearchParams(new FormData(form)) })
+    .then(function (response) {
+      return response.ok ? response.text() : "";
+    })
+    .then(function (html) {
+      var fresh = new DOMParser().parseFromString(html, "text/html").querySelector(".list-count");
+      if (fresh) {
+        document.querySelector(".list-count").textContent = fresh.textContent;
+      }
+    });
 });
