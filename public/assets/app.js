@@ -1,3 +1,6 @@
+// Número de cambios de estado enviados: solo se aplica el recuento de la última respuesta.
+var togglesSent = 0;
+
 // Pide confirmación antes de enviar formularios marcados con data-confirm.
 document.addEventListener("submit", function (event) {
   var form = event.target;
@@ -31,5 +34,19 @@ document.addEventListener("submit", function (event) {
     status.remove();
   }
 
-  fetch(form.action);
+  var sent = ++togglesSent;
+  fetch(form.action, { method: "POST", body: new URLSearchParams(new FormData(form)) })
+    .then(function (response) {
+      if (!response.ok) {
+        return;
+      }
+      return response.text().then(function (html) {
+        var doc = new DOMParser().parseFromString(html, "text/html");
+        var count = doc.querySelector(".list-count");
+        var current = document.querySelector(".list-count");
+        if (count && current && sent === togglesSent) {
+          current.textContent = count.textContent;
+        }
+      });
+    });
 });

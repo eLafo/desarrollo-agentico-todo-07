@@ -5,7 +5,7 @@ Lo que ve y puede hacer el usuario con sus tareas. Todo pasa en dos pantallas: l
 ## La lista
 
 - La pestaña y el enlace de la navegación lateral dicen «Tareas». El título de la página también.
-- Debajo del título, el número de tareas: «3 tareas en tu lista», y en singular «1 tarea en tu lista».
+- Debajo del título, el número de tareas: «3 tareas en tu lista», y en singular «1 tarea en tu lista». Si hay alguna completada, el recuento añade cuántas: «3 tareas en tu lista · 2 completadas», y con una sola «3 tareas en tu lista · 1 completada». Sin ninguna completada, solo sale el número de tareas.
 - Las tareas salen por orden de creación, de la más antigua a la más reciente.
 - Cada tarea muestra:
   - un botón redondo para completarla o reabrirla;
@@ -43,7 +43,8 @@ Antes de guardar, la acción quita los espacios del principio y del final. Los c
 
 - El botón de cada tarea la alterna entre pendiente y completada. Una tarea completada lleva la etiqueta «Completada», y su botón pasa a reabrirla.
 - Sin JavaScript, el formulario envía `PUT /tasks/{task_id}/toggle`, la acción cambia el estado y vuelve a la lista. No hay aviso.
-- Con JavaScript, `app.js` cambia la tarea en la página sin recargarla (la etiqueta, el estado del botón y su nombre accesible) y después llama a `fetch(form.action)`.
+- Con JavaScript, `app.js` cambia la tarea en la página sin recargarla (la etiqueta, el estado del botón y su nombre accesible) y envía el formulario con `fetch` (`PUT` con `_method`, como el formulario normal). Cuando responde el servidor, copia el recuento de la lista que este devuelve, así que el recuento cambia un momento después que la tarea. Si se cambian varias tareas seguidas, vale el recuento de la última respuesta.
+- Al completar o reabrir una tarea, el recuento de completadas cambia con ella, con JavaScript o sin él.
 
 ## Eliminar
 

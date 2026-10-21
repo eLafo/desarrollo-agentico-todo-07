@@ -21,6 +21,7 @@ func TasksIndex(c buffalo.Context) error {
 	}
 
 	c.Set("tasks", tasks)
+	c.Set("completedCount", tasks.CompletedCount())
 	c.Set("task", &models.Task{})
 	c.Set("errors", validate.NewErrors())
 	return c.Render(http.StatusOK, r.HTML("tasks/index.plush.html"))
@@ -48,6 +49,7 @@ func TasksCreate(c buffalo.Context) error {
 		}
 
 		c.Set("tasks", tasks)
+		c.Set("completedCount", tasks.CompletedCount())
 		c.Set("task", task)
 		c.Set("errors", verrs)
 		return c.Render(http.StatusUnprocessableEntity, r.HTML("tasks/index.plush.html"))
