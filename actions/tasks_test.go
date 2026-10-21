@@ -237,3 +237,70 @@ func (as *ActionSuite) Test_TasksUpdate_InvalidID() {
 	res := as.HTML("/tasks/no-es-un-uuid").Put(url.Values{"title": {"Título nuevo"}})
 	as.Equal(404, res.Code)
 }
+
+func (as *ActionSuite) createTask(title string, completed bool) *models.Task {
+	task := &models.Task{Title: title, Completed: completed}
+	verrs, err := as.DB.ValidateAndCreate(task)
+	as.NoError(err)
+	as.False(verrs.HasAny())
+	return task
+}
+
+func (as *ActionSuite) Test_TasksIndex_CountWithoutCompleted() {
+	as.createTask("Primera", false)
+	as.createTask("Segunda", false)
+
+	res := as.HTML("/").Get()
+	as.Equal(200, res.Code)
+	body := res.Body.String()
+	as.Contains(body, "2 tareas en tu lista")
+	as.NotContains(body, "en tu lista ·")
+}
+
+func (as *ActionSuite) Test_TasksIndex_CountOneCompleted() {
+	as.LoadFixture("tres tareas")
+
+	res := as.HTML("/").Get()
+	as.Equal(200, res.Code)
+	body := res.Body.String()
+	as.Contains(body, "3 tareas en tu lista · 1 completada")
+	as.NotContains(body, "1 completadas")
+}
+
+func (as *ActionSuite) Test_TasksIndex_CountSeveralCompleted() {
+	as.createTask("Primera", true)
+	as.createTask("Segunda", true)
+	as.createTask("Tercera", false)
+
+	res := as.HTML("/").Get()
+	as.Equal(200, res.Code)
+	as.Contains(res.Body.String(), "3 tareas en tu lista · 2 completadas")
+}
+
+func (as *ActionSuite) Test_TasksToggle_UpdatesCount() {
+	task := as.createTask("Pendiente", false)
+
+	as.NotContains(as.HTML("/").Get().Body.String(), "en tu lista ·")
+
+	res := as.HTML("/tasks/%s/toggle", task.ID).Put(url.Values{})
+	as.Equal(303, res.Code)
+	as.Contains(as.HTML("/").Get().Body.String(), "1 tarea en tu lista · 1 completada")
+
+	res = as.HTML("/tasks/%s/toggle", task.ID).Put(url.Values{})
+	as.Equal(303, res.Code)
+	body := as.HTML("/").Get().Body.String()
+	as.Contains(body, "1 tarea en tu lista")
+	as.NotContains(body, "en tu lista ·")
+}
+
+func (as *ActionSuite) Test_TasksCreate_Invalid_ShowsCompletedCount() {
+	as.createTask("Hecha", true)
+
+	res := as.HTML("/tasks").Post(&models.Task{Title: ""})
+	as.Equal(422, res.Code)
+	as.Contains(res.Body.String(), "1 tarea en tu lista · 1 completada")
+
+	count, err := as.DB.Count(&models.Task{})
+	as.NoError(err)
+	as.Equal(1, count)
+}

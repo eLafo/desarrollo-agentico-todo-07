@@ -18,3 +18,9 @@ Un documento de cierre cuenta qué pasó en su caso, y no se reescribe cuando ot
 Entre tres y cinco condiciones por documento, y las entradas en orden por número de issue. Si un documento ya tiene entrada, se actualizan sus condiciones en lugar de añadir otra.
 
 ## Índice
+
+- [feature-3-recuento-tareas-completadas.md](feature-3-recuento-tareas-completadas.md): el recuento de la lista añade « · M completadas» y, con JavaScript, completar/reabrir pasa a guardarse y actualiza el recuento
+  - Cuando se trabaje con `templates/tasks/index.plush.html` o el recuento `.list-count` de la cabecera
+  - Cuando se modifique `public/assets/app.js` o el envío de completar/reabrir (`/tasks/{id}/toggle`) con JavaScript
+  - Cuando se modifique `Tasks` en `models/task.go` o las variables que `TasksIndex` y `TasksCreate` pasan a la plantilla
+  - Cuando se investigue un recuento desfasado, o una tarea que vuelve a su estado anterior al recargar
