@@ -2,6 +2,12 @@
 
 Lo que ve y puede hacer el usuario con sus tareas. Todo pasa en dos pantallas: la lista (`/`) y la edición de una tarea (`/tasks/{task_id}/edit`). El código está en `actions/tasks.go`, `models/task.go`, `templates/tasks/` y `public/assets/app.js`.
 
+## Logo
+
+- Las dos pantallas muestran arriba a la izquierda, en la barra lateral, el logo de Entaina, con el texto alternativo «Entaina». Va encima del nombre de la aplicación, «todo.».
+- Con 760 px de ancho o menos, la barra lateral pasa a la parte de arriba y el logo queda a la izquierda del nombre.
+- Es una imagen, no un enlace. Lo pone la plantilla común (`templates/application.plush.html`). El fichero, `public/assets/entaina-logo.png`, es una copia sin modificar del logo para fondo claro del sistema de diseño de Entaina (`https://design-system.entaina.ai/brand/logo.png`, 640 × 264): no se recorta ni se reprocesa, y `public/assets/app.css` compensa su margen transparente para que el dibujo quede en la esquina.
+
 ## La lista
 
 - La pestaña y el enlace de la navegación lateral dicen «Tareas». El título de la página también.

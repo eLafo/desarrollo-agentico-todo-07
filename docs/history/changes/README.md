@@ -18,3 +18,9 @@ Un documento de cierre cuenta qué pasó en su caso, y no se reescribe cuando ot
 Entre tres y cinco condiciones por documento, y las entradas en orden por número de issue. Si un documento ya tiene entrada, se actualizan sus condiciones en lugar de añadir otra.
 
 ## Índice
+
+- [feature-12-quiero-anadir-un-logo-arriba-a-la-izquierda.md](feature-12-quiero-anadir-un-logo-arriba-a-la-izquierda.md): logo de Entaina arriba a la izquierda en todas las pantallas
+  - Cuando se trabaje con `templates/application.plush.html` o la barra lateral y la marca «todo.»
+  - Cuando se modifique `public/assets/app.css` en `.brand-logo`, `.app-brand` o la media query de pantalla estrecha
+  - Cuando se cambie o sustituya `public/assets/entaina-logo.png` u otros estáticos de marca
+  - Cuando se añadan tests de navegador en `e2e/marca/` o se investigue el logo desbordando o montándose sobre «todo.»
