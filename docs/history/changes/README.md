@@ -18,3 +18,9 @@ Un documento de cierre cuenta qué pasó en su caso, y no se reescribe cuando ot
 Entre tres y cinco condiciones por documento, y las entradas en orden por número de issue. Si un documento ya tiene entrada, se actualizan sus condiciones en lugar de añadir otra.
 
 ## Índice
+
+- [feature-7-quiero-asignar-fechas-limites-a-las-tareas.md](feature-7-quiero-asignar-fechas-limites-a-las-tareas.md): fecha límite de un día en las tareas, visible en la lista y editable
+  - Cuando se trabaje con `models/task.go`, `TasksUpdate` en `actions/tasks.go` o la migración de `tasks`
+  - Cuando se modifique `templates/tasks/index.plush.html` o `templates/tasks/edit.plush.html`
+  - Cuando se añada un campo a la tarea, como la fecha al crearla, orden o filtros por fecha
+  - Cuando se investigue un desfase de día o un 422 por «La fecha límite no es válida.»

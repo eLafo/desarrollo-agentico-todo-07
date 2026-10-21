@@ -30,6 +30,9 @@
             </button>
           </form>
           <span class="task-title"><%= t.Title %></span>
+          <%= if (t.DueDateText() != "") { %>
+            <p class="task-due">Fecha límite: <time datetime="<%= t.DueDateValue() %>"><%= t.DueDateText() %></time></p>
+          <% } %>
           <%= if (t.Completed) { %>
             <span class="task-status">Completada</span>
           <% } %>

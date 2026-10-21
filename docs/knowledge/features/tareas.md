@@ -10,6 +10,7 @@ Lo que ve y puede hacer el usuario con sus tareas. Todo pasa en dos pantallas: l
 - Cada tarea muestra:
   - un botón redondo para completarla o reabrirla;
   - su título;
+  - su fecha límite, si la tiene, debajo del título: «Fecha límite: 15/11/2026» (día/mes/año);
   - la etiqueta «Completada», si lo está;
   - un enlace para editarla y un botón para eliminarla.
 - Los botones solo tienen icono, y su nombre accesible incluye el título: «Completar tarea: Comprar pan», «Reabrir tarea: …», «Editar tarea: …», «Eliminar tarea: …».
@@ -26,6 +27,13 @@ Las comprueba `Task.Validate` al crear y al editar:
 
 Antes de guardar, la acción quita los espacios del principio y del final. Los campos de título del navegador tienen también `maxlength="200"`.
 
+## Fecha límite
+
+- Es opcional y es solo un día, sin hora.
+- Las tareas se crean sin fecha límite. Se pone, se cambia o se quita al editar la tarea.
+- Se acepta cualquier día, también uno pasado, que se muestra igual que los demás.
+- `Task.Validate` rechaza un valor que no sea un día con «La fecha límite no es válida.».
+
 ## Añadir
 
 - El formulario está debajo de la lista: el campo «Nueva tarea», con el texto de ayuda «Añadir una tarea…», y el botón «Añadir».
@@ -34,9 +42,9 @@ Antes de guardar, la acción quita los espacios del principio y del final. Los c
 
 ## Editar
 
-- Se llega desde el enlace de editar de cada tarea. La pantalla tiene el enlace «← Volver a la lista», el título «Editar tarea» y el campo «Título» con el título actual. Debajo, la ayuda: «Hasta 200 caracteres. Los demás datos de la tarea no cambian.».
-- «Guardar cambios» cambia solo el título: si la tarea estaba completada, lo sigue estando. Después vuelve a la lista con el aviso «Tarea actualizada.».
-- Con un título inválido, la pantalla se vuelve a mostrar con `422` y el mensaje. «Cancelar» vuelve a la lista sin cambiar nada.
+- Se llega desde el enlace de editar de cada tarea. La pantalla tiene el enlace «← Volver a la lista», el título «Editar tarea» y el campo «Título» con el título actual. Debajo, la ayuda: «Hasta 200 caracteres. Los demás datos de la tarea no cambian.». Después, el campo de fecha «Fecha límite», con la fecha actual si la tiene, y su ayuda: «Opcional. Déjala vacía si la tarea no tiene fecha límite.».
+- «Guardar cambios» cambia el título y la fecha límite, y con el campo de fecha vacío la tarea queda sin fecha. Si la tarea estaba completada, lo sigue estando. Después vuelve a la lista con el aviso «Tarea actualizada.».
+- Con un título o una fecha límite no válidos, la pantalla se vuelve a mostrar con `422` y el mensaje debajo de su campo. «Cancelar» vuelve a la lista sin cambiar nada.
 - Si la tarea no existe, `404`.
 
 ## Completar y reabrir
