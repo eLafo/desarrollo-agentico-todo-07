@@ -69,3 +69,72 @@ func (ms *ModelSuite) Test_Task_Toggle_Persists() {
 	ms.NoError(ms.DB.Find(reloaded, task.ID))
 	ms.True(reloaded.Completed)
 }
+
+func (ms *ModelSuite) Test_Task_DueDate_OptionalByDefault() {
+	task := &Task{Title: "Sin fecha"}
+	verrs, err := ms.DB.ValidateAndCreate(task)
+	ms.NoError(err)
+	ms.False(verrs.HasAny())
+
+	reloaded := &Task{}
+	ms.NoError(ms.DB.Find(reloaded, task.ID))
+	ms.Nil(reloaded.DueDate)
+	ms.Equal("", reloaded.DueDateValue())
+	ms.Equal("", reloaded.DueDateText())
+}
+
+func (ms *ModelSuite) Test_Task_SetDueDate_Persists() {
+	task := &Task{Title: "Con fecha"}
+	task.SetDueDate("2026-11-15")
+	verrs, err := ms.DB.ValidateAndCreate(task)
+	ms.NoError(err)
+	ms.False(verrs.HasAny())
+
+	reloaded := &Task{}
+	ms.NoError(ms.DB.Find(reloaded, task.ID))
+	ms.Equal("2026-11-15", reloaded.DueDateValue())
+	ms.Equal("15/11/2026", reloaded.DueDateText())
+}
+
+func (ms *ModelSuite) Test_Task_SetDueDate_Empty_RemovesDate() {
+	task := &Task{Title: "Con fecha"}
+	task.SetDueDate("2026-11-15")
+	verrs, err := ms.DB.ValidateAndCreate(task)
+	ms.NoError(err)
+	ms.False(verrs.HasAny())
+
+	task.SetDueDate("")
+	verrs, err = ms.DB.ValidateAndUpdate(task)
+	ms.NoError(err)
+	ms.False(verrs.HasAny())
+
+	reloaded := &Task{}
+	ms.NoError(ms.DB.Find(reloaded, task.ID))
+	ms.Nil(reloaded.DueDate)
+}
+
+func (ms *ModelSuite) Test_Task_SetDueDate_PastDate_Valid() {
+	task := &Task{Title: "Vencida"}
+	task.SetDueDate("2020-01-31")
+	verrs, err := ms.DB.ValidateAndCreate(task)
+	ms.NoError(err)
+	ms.False(verrs.HasAny())
+
+	reloaded := &Task{}
+	ms.NoError(ms.DB.Find(reloaded, task.ID))
+	ms.Equal("2020-01-31", reloaded.DueDateValue())
+}
+
+func (ms *ModelSuite) Test_Task_SetDueDate_Invalid() {
+	for _, value := range []string{"2026-02-30", "2026-13-01", "15/11/2026", "mañana", "20261-01-01"} {
+		task := &Task{Title: "Fecha inválida"}
+		task.SetDueDate(value)
+		verrs, err := ms.DB.ValidateAndCreate(task)
+		ms.NoError(err, value)
+		ms.Contains(verrs.Get("due_date"), "La fecha límite no es válida.", value)
+	}
+
+	count, err := ms.DB.Count(&Task{})
+	ms.NoError(err)
+	ms.Equal(0, count)
+}

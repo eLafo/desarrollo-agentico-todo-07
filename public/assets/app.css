@@ -129,6 +129,15 @@ h1 {
   border-bottom: 1px solid var(--color-border);
 }
 
+.task-due {
+  grid-row: 2;
+  grid-column: 2;
+  margin-top: -0.5rem;
+  padding-bottom: 0.4rem;
+  color: var(--color-muted);
+  font-size: 0.8rem;
+}
+
 .task-title {
   align-self: center;
   min-width: 0;
@@ -245,7 +254,8 @@ h1 {
   line-height: 1;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="date"] {
   width: 100%;
   min-width: 0;
   min-height: 44px;
@@ -367,6 +377,14 @@ input:focus-visible {
   margin-bottom: 0.5rem;
   font-size: 0.85rem;
   font-weight: 600;
+}
+
+.edit-task-due {
+  margin-top: 1.25rem;
+}
+
+.edit-task input[type="date"] {
+  width: auto;
 }
 
 .edit-task-actions {
