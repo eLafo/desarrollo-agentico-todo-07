@@ -237,3 +237,60 @@ func (as *ActionSuite) Test_TasksUpdate_InvalidID() {
 	res := as.HTML("/tasks/no-es-un-uuid").Put(url.Values{"title": {"Título nuevo"}})
 	as.Equal(404, res.Code)
 }
+
+func (as *ActionSuite) Test_TasksIndex_CountWithoutCompleted() {
+	as.NoError(as.DB.Create(&models.Task{Title: "Uno"}))
+	as.NoError(as.DB.Create(&models.Task{Title: "Dos"}))
+
+	res := as.HTML("/").Get()
+	as.Equal(200, res.Code)
+	body := res.Body.String()
+	as.Contains(body, "2 tareas en tu lista")
+	as.NotContains(body, "en tu lista ·")
+}
+
+func (as *ActionSuite) Test_TasksIndex_CountWithOneCompleted() {
+	as.LoadFixture("tres tareas")
+
+	res := as.HTML("/").Get()
+	as.Equal(200, res.Code)
+	body := res.Body.String()
+	as.Contains(body, "3 tareas en tu lista · 1 completada")
+	as.NotContains(body, "completadas")
+}
+
+func (as *ActionSuite) Test_TasksIndex_CountWithSeveralCompleted() {
+	as.NoError(as.DB.Create(&models.Task{Title: "Uno", Completed: true}))
+	as.NoError(as.DB.Create(&models.Task{Title: "Dos", Completed: true}))
+	as.NoError(as.DB.Create(&models.Task{Title: "Tres"}))
+
+	res := as.HTML("/").Get()
+	as.Equal(200, res.Code)
+	as.Contains(res.Body.String(), "3 tareas en tu lista · 2 completadas")
+}
+
+func (as *ActionSuite) Test_TasksToggle_UpdatesCount() {
+	task := &models.Task{Title: "Uno"}
+	as.NoError(as.DB.Create(task))
+
+	res := as.HTML("/tasks/%s/toggle", task.ID).Put(url.Values{})
+	as.Equal(303, res.Code)
+	body := as.HTML("/").Get().Body.String()
+	as.Contains(body, "1 tarea en tu lista · 1 completada")
+
+	res = as.HTML("/tasks/%s/toggle", task.ID).Put(url.Values{})
+	as.Equal(303, res.Code)
+	body = as.HTML("/").Get().Body.String()
+	as.Contains(body, "1 tarea en tu lista")
+	as.NotContains(body, "en tu lista ·")
+}
+
+func (as *ActionSuite) Test_TasksCreate_EmptyTitle_KeepsCompletedCount() {
+	as.NoError(as.DB.Create(&models.Task{Title: "Uno", Completed: true}))
+
+	res := as.HTML("/tasks").Post(&models.Task{Title: ""})
+	as.Equal(422, res.Code)
+	body := res.Body.String()
+	as.Contains(body, "El título es obligatorio.")
+	as.Contains(body, "1 tarea en tu lista · 1 completada")
+}
