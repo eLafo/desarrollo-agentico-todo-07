@@ -31,5 +31,9 @@ document.addEventListener("submit", function (event) {
     status.remove();
   }
 
-  fetch(form.action);
+  // Envía el formulario como sin JavaScript: POST con _method=PUT y authenticity_token.
+  fetch(form.action, {
+    method: "POST",
+    body: new URLSearchParams(new FormData(form)),
+  });
 });

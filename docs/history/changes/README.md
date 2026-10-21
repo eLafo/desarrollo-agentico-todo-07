@@ -18,3 +18,9 @@ Un documento de cierre cuenta qué pasó en su caso, y no se reescribe cuando ot
 Entre tres y cinco condiciones por documento, y las entradas en orden por número de issue. Si un documento ya tiene entrada, se actualizan sus condiciones en lugar de añadir otra.
 
 ## Índice
+
+- [bug-5-el-cambio-de-estado-de-una-tarea-no-persiste.md](bug-5-el-cambio-de-estado-de-una-tarea-no-persiste.md): completar y reabrir una tarea con JavaScript ahora se guarda: `app.js` envía el formulario por `POST` con `_method=PUT` y el token CSRF
+  - Cuando se trabaje con `public/assets/app.js` o con la versión del script en `templates/application.plush.html`
+  - Cuando se modifique la ruta `PUT /tasks/{task_id}/toggle` o el botón de completar y reabrir en la lista de tareas
+  - Cuando se añada una petición `fetch` desde el navegador que cambie datos (método, CSRF, `_method`)
+  - Cuando se investigue un cambio de estado de tarea que se pierde al recargar la página
